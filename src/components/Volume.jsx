@@ -8,12 +8,9 @@ export default function Volume() {
 
   const setVolume = async (e) => {
     await axios.put(
-      `https://api.spotify.com/v1/me/player/volume`,
+      `https://api.spotify.com/v1/me/player/volume?volume_percent=${e.target.value}`,
       {},
       {
-        params: {
-          volume_parcent: parseInt(e.target.value),
-        },
         headers: {
           Authorization: `Bearer ${token}`,
         },
