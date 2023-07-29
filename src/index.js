@@ -4,12 +4,16 @@ import "./index.css";
 import App from "./App";
 import { StateProvider } from "./utils/StateProvider";
 import reducer, { initialState } from "./utils/reducer";
+import { Provider } from "react-redux";
+import Store from "./app/Store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <StateProvider initialState={initialState} reducer={reducer}>
-      <App />
-    </StateProvider>
+    <Provider store={Store}>
+      <StateProvider initialState={initialState} reducer={reducer}>
+        <App />
+      </StateProvider>
+    </Provider>
   </React.StrictMode>
 );

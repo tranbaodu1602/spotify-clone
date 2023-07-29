@@ -1,17 +1,27 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { AiFillClockCircle } from "react-icons/ai";
-import { useStateProvider } from "../utils/StateProvider";
 import axios from "axios";
-import { reducerCases } from "../utils/Constants";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectToken,
+  selectedPlaylist,
+  selectedPlaylistId,
+  setPlayerState,
+  setPlaying,
+  setPlaylist,
+} from "../app/TrackSlice";
 
 export default function Body({ headerBackground }) {
-  const [{ token, selectedPlaylistId, selectedPlaylist }, dispatch] =
-    useStateProvider();
+  const dispatch = useDispatch();
+  const token = useSelector(selectToken);
+  const SelectedPlaylistId = useSelector(selectedPlaylistId);
+  const SelectedPlaylist = useSelector(selectedPlaylist);
+
   useEffect(() => {
     const getInitialPlaylist = async () => {
       const response = await axios.get(
-        `https://api.spotify.com/v1/playlists/${selectedPlaylistId}`,
+        `https://api.spotify.com/v1/playlists/${SelectedPlaylistId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -36,10 +46,10 @@ export default function Body({ headerBackground }) {
           track_number: track.track_number,
         })),
       };
-      dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist });
+      dispatch(setPlaylist({ selectedPlaylist }));
     };
     getInitialPlaylist();
-  }, [token, dispatch, selectedPlaylistId]);
+  }, [token, dispatch, SelectedPlaylistId]);
 
   const msToMinutesAndSecons = (ms) => {
     const minutes = Math.floor(ms / 60000);
@@ -78,24 +88,24 @@ export default function Body({ headerBackground }) {
         artists,
         image,
       };
-      dispatch({ type: reducerCases.SET_PLAYING, currentlyPlaying });
-      dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
+      dispatch(setPlaying({ currentlyPlaying }));
+      dispatch(setPlayerState({ playerState: true }));
     } else {
-      dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
+      dispatch(setPlayerState({ playerState: true }));
     }
   };
   return (
-    <Container headerBackground={headerBackground}>
-      {selectedPlaylist && (
+    <Container data-headerbackground={headerBackground}>
+      {SelectedPlaylist && (
         <>
           <div className="playlist">
             <div className="image">
-              <img src={selectedPlaylist.image} alt="selectedPlaylist" />
+              <img src={SelectedPlaylist.image} alt="selectedPlaylist" />
             </div>
             <div className="details">
               <span className="type">PLAYLIST</span>
-              <h1 className="title">{selectedPlaylist.name}</h1>
-              <p className="description">{selectedPlaylist.description}</p>
+              <h1 className="title">{SelectedPlaylist.name}</h1>
+              <p className="description">{SelectedPlaylist.description}</p>
             </div>
           </div>
           <div className="list">
@@ -116,7 +126,7 @@ export default function Body({ headerBackground }) {
               </div>
             </div>
             <div className="tracks">
-              {selectedPlaylist.tracks.map(
+              {SelectedPlaylist.tracks.map(
                 (
                   {
                     id,
@@ -208,7 +218,7 @@ const Container = styled.div`
       top: 18vh;
       padding: 1rem 3rem;
       transition: 0.3s ease-in-out;
-      background-color: ${({ headerBackground }) =>
+      background-color: ${({ "data-headerbackground": headerBackground }) =>
         headerBackground ? "black" : "none"};
     }
     .tracks {

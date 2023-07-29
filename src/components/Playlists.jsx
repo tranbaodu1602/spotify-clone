@@ -3,9 +3,22 @@ import { useStateProvider } from "../utils/StateProvider";
 import axios from "axios";
 import styled from "styled-components";
 import { reducerCases } from "../utils/Constants";
+import {
+  selectToken,
+  selectedPlaylists,
+  setPlaylists,
+  setPlaylistId,
+} from "../app/TrackSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Playlists() {
-  const [{ token, playlists }, dispatch] = useStateProvider();
+  // const [{ playlists }, dispatch] = useStateProvider();
+
+  const dispatch = useDispatch();
+
+  const token = useSelector(selectToken);
+  const playlists = useSelector(selectedPlaylists);
+
   useEffect(() => {
     const getPlaylistData = async () => {
       const response = await axios.get(
@@ -20,13 +33,14 @@ export default function Playlists() {
       const playlists = items.map(({ name, id }) => {
         return { name, id };
       });
-      dispatch({ type: reducerCases.SET_PLAYLISTS, playlists });
+      console.log(playlists);
+      dispatch(setPlaylists({ playlists }));
     };
     getPlaylistData();
   }, [token, dispatch]);
 
   const changeCurrentPlaylist = (selectedPlaylistId) => {
-    dispatch({ type: reducerCases.SET_PLAYLIST_ID, selectedPlaylistId });
+    dispatch(setPlaylistId({ selectedPlaylistId }));
   };
 
   return (

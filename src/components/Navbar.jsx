@@ -2,13 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { FaSearch } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
-import { useStateProvider } from "../utils/StateProvider";
+import { useSelector } from "react-redux";
+import { selectedUserInfo } from "../app/TrackSlice";
 
 export default function Navbar({ navBackground }) {
-  const [{ userInfo }] = useStateProvider();
-
+  const userInfo = useSelector(selectedUserInfo);
   return (
-    <Container navBackground={navBackground}>
+    <Container data-navbackground={navBackground}>
       <div className="search__bar">
         <FaSearch />
         <input type="text" placeholder="artists, songs or podcasts" />
@@ -31,7 +31,7 @@ const Container = styled.div`
   position: sticky;
   top: 0;
   transition: 0.3s ease-in-out;
-  background-color: ${({ navBackground }) =>
+  background-color: ${({ "data-navbackground": navBackground }) =>
     navBackground ? "rgba(0,0,0,0.7)" : "none"};
   .search__bar {
     background-color: white;

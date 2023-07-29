@@ -3,16 +3,23 @@ import styled from "styled-components";
 import { useStateProvider } from "../utils/StateProvider";
 import axios from "axios";
 import { reducerCases } from "../utils/Constants";
+import { useDispatch, useSelector } from "react-redux";
+import { selectToken, selectedPlaying, setPlaying } from "../app/TrackSlice";
 
 export default function CurrentTrack() {
-  const [{ token, currentlyPlaying }, dispatch] = useStateProvider();
+  // const [{ currentlyPlaying }, dispatch] = useStateProvider();
+
+  const dispatch = useDispatch();
+  const token = useSelector(selectToken);
+  const currentlyPlaying = useSelector(selectedPlaying);
+
   useEffect(() => {
     const getCurrentTrack = async () => {
       const response = await axios.get(
         "https://api.spotify.com/v1/me/player/currently-playing",
         {
           headers: {
-            Authorization: "Bearer " + token,
+            Authorization: `Bearer   ${token}`,
           },
         }
       );
@@ -24,7 +31,7 @@ export default function CurrentTrack() {
           artists: item.artists.map((artist) => artist.name),
           image: item.album.images[2].url,
         };
-        dispatch({ type: reducerCases.SET_PLAYING, currentlyPlaying });
+        dispatch(setPlaying({ currentlyPlaying }));
       }
     };
     getCurrentTrack();

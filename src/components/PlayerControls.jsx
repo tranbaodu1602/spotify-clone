@@ -7,11 +7,21 @@ import {
 } from "react-icons/bs";
 import { CgPlayTrackNext, CgPlayTrackPrev } from "react-icons/cg";
 import { FiRepeat } from "react-icons/fi";
-import { useStateProvider } from "../utils/StateProvider";
+
 import axios from "axios";
 import { reducerCases } from "../utils/Constants";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectToken,
+  selectedplayerState,
+  setPlayerState,
+  setPlaying,
+} from "../app/TrackSlice";
 export default function PlayerControls() {
-  const [{ token, playerState }, dispatch] = useStateProvider();
+  const dispatch = useDispatch();
+  const playerState = useSelector(selectedplayerState);
+
+  const token = useSelector(selectToken);
 
   const changeTrack = async (type) => {
     // alert("click" + type);
@@ -41,9 +51,9 @@ export default function PlayerControls() {
         artists: item.artists.map((artist) => artist.name),
         image: item.album.images[2].url,
       };
-      dispatch({ type: reducerCases.SET_PLAYING, currentlyPlaying });
+      dispatch(setPlaying({ currentlyPlaying }));
     } else {
-      dispatch({ type: reducerCases.SET_PLAYING, currentlyPlaying: null });
+      dispatch(setPlaying({ currentlyPlaying: null }));
     }
   };
   const changeState = async () => {
@@ -58,10 +68,11 @@ export default function PlayerControls() {
         },
       }
     );
-    dispatch({
-      type: reducerCases.SET_PLAYER_STATE,
-      playerState: !playerState,
-    });
+    dispatch(
+      setPlayerState({
+        playerState: !playerState,
+      })
+    );
   };
 
   return (

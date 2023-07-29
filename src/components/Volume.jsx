@@ -2,9 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import { useStateProvider } from "../utils/StateProvider";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { selectToken } from "../app/TrackSlice";
 
 export default function Volume() {
-  const [{ token }] = useStateProvider();
+  const token = useSelector(selectToken);
 
   const setVolume = async (e) => {
     await axios.put(

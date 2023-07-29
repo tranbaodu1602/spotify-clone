@@ -4,12 +4,14 @@ import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import Body from "./Body";
 import Footer from "./Footer";
-import { useStateProvider } from "../utils/StateProvider";
 import axios from "axios";
-import { reducerCases } from "../utils/Constants";
+import { useDispatch, useSelector } from "react-redux";
+import { selectToken, setUser } from "../app/TrackSlice";
 
 export default function Spotify() {
-  const [{ token }, dispatch] = useStateProvider();
+  const dispatch = useDispatch();
+
+  const token = useSelector(selectToken);
 
   const bodyRef = useRef();
   const [navBackground, setNavBackground] = useState(false);
@@ -35,9 +37,8 @@ export default function Spotify() {
         userId: data.id,
         userName: data.display_name,
       };
-      dispatch({ type: reducerCases.SET_USER, userInfo });
+      dispatch(setUser({ userInfo }));
     };
-
     getUserInfo();
   }, [dispatch, token]);
 
