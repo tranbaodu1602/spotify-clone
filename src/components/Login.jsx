@@ -4,7 +4,7 @@ import styled from "styled-components";
 export default function Login() {
   const handleClick = () => {
     const clientId = "15d57ae406fe43fab09289321a47803c";
-    const redirectUrl = "http://localhost:3000/";
+    const redirectUrl = "https://spotify-clone-ruby-one.vercel.app/";
     const apiUrl = "https://accounts.spotify.com/authorize";
     const scope = [
       "user-read-private",
