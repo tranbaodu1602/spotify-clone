@@ -15,6 +15,7 @@ export default function App() {
     if (hash) {
       const token = hash.substring(1).split("&")[0].split("=")[1];
       dispatch(setToken({ token }));
+      console.log(token);
     }
   }, [token, dispatch]);
 

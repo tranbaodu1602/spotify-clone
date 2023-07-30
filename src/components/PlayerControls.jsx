@@ -7,9 +7,7 @@ import {
 } from "react-icons/bs";
 import { CgPlayTrackNext, CgPlayTrackPrev } from "react-icons/cg";
 import { FiRepeat } from "react-icons/fi";
-
 import axios from "axios";
-import { reducerCases } from "../utils/Constants";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectToken,

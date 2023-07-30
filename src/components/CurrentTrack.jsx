@@ -1,14 +1,10 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { useStateProvider } from "../utils/StateProvider";
 import axios from "axios";
-import { reducerCases } from "../utils/Constants";
 import { useDispatch, useSelector } from "react-redux";
 import { selectToken, selectedPlaying, setPlaying } from "../app/TrackSlice";
 
 export default function CurrentTrack() {
-  // const [{ currentlyPlaying }, dispatch] = useStateProvider();
-
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
   const currentlyPlaying = useSelector(selectedPlaying);

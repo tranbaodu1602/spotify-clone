@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { useStateProvider } from "../utils/StateProvider";
+
 import axios from "axios";
 import styled from "styled-components";
-import { reducerCases } from "../utils/Constants";
+
 import {
   selectToken,
   selectedPlaylists,
@@ -12,10 +12,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 export default function Playlists() {
-  // const [{ playlists }, dispatch] = useStateProvider();
-
   const dispatch = useDispatch();
-
   const token = useSelector(selectToken);
   const playlists = useSelector(selectedPlaylists);
 
